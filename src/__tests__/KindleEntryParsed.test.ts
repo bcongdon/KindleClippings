@@ -5,7 +5,7 @@ interface DataEntry {
   entry: KindleEntry;
   titleParsed: string;
   author: string;
-  page: number;
+  page: number | string;
   location: string;
   dateOfCreation: string;
   type: EntryType;
@@ -44,7 +44,8 @@ const sampleEntries: Array<DataEntry> = [
       "- Your Highlight on Location 35-36 | Added on Monday, July 20, 2020 12:58:07 AM",
       "軟禁状態であったことは事実なのだから、おそらく外の人間からすれば、人権を無視された酷い生活に見えたのだろう。"
     ),
-    titleParsed: "Ｃｈａｏｓ；Ｃｈｉｌｄ　－Ｃｈｉｌｄｒｅｎ’ｓ　Ｒｅｖｉｖｅ－ (講談社ラノベ文庫)",
+    titleParsed:
+      "Ｃｈａｏｓ；Ｃｈｉｌｄ　－Ｃｈｉｌｄｒｅｎ’ｓ　Ｒｅｖｉｖｅ－ (講談社ラノベ文庫)",
     author: "ＭＡＧＥＳ．;Ｃｈｉｙｏ ｓｔ．ｉｎｃ;梅原英司",
     page: 0,
     location: "35-36",
@@ -76,16 +77,28 @@ const sampleEntries: Array<DataEntry> = [
     location: "380-381",
     dateOfCreation: "Added on Saturday, April 13, 2019 3:43:59 PM",
     type: EntryType.Highlight
+  },
+  {
+    entry: new KindleEntry(
+      "Thinking in Systems",
+      "- Your Highlight on page xiv | Location 380-381 | Added on Saturday, April 13, 2019 3:43:59 PM",
+      "It’s easier to learn about a system’s elements than about its interconnections."
+    ),
+    titleParsed: "Thinking in Systems",
+    author: "",
+    page: "xiv",
+    location: "380-381",
+    dateOfCreation: "Added on Saturday, April 13, 2019 3:43:59 PM",
+    type: EntryType.Highlight
   }
 ];
 
 // eslint-disable-next-line no-undef
 describe("KindleEntryParsed", () => {
- 
   describe("parseAuthor", () => {
     test("Obtains author", () => {
       // AAA
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry
@@ -102,7 +115,7 @@ describe("KindleEntryParsed", () => {
 
   describe("parseBook", () => {
     test("Obtains book title", () => {
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry
@@ -119,7 +132,7 @@ describe("KindleEntryParsed", () => {
 
   describe("parseEntryType", () => {
     test("Obtains correct entry type", () => {
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry
@@ -138,7 +151,7 @@ describe("KindleEntryParsed", () => {
 
   describe("parseMetadata", () => {
     test("Obtains correct page", () => {
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry
@@ -152,7 +165,7 @@ describe("KindleEntryParsed", () => {
     });
 
     test("Obtains correct location", () => {
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry
@@ -166,7 +179,7 @@ describe("KindleEntryParsed", () => {
     });
 
     test("Obtains correct date of creation", () => {
-      sampleEntries.forEach(sampleEntry => {
+      sampleEntries.forEach((sampleEntry) => {
         // Arrange
         const kindleParsed: KindleEntryParsed = new KindleEntryParsed(
           sampleEntry.entry

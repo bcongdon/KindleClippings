@@ -5,20 +5,20 @@ const LocationRegex = Object.freeze(/\d+-?\d*/);
 export const EntryTypeTranslations = Object.freeze({
   NOTE: ["note", "nota"],
   HIGHLIGHT: ["highlight", "subrayado", "surlignement"],
-  BOOKMARK: ["bookmark", "marcador", "signet"],
+  BOOKMARK: ["bookmark", "marcador", "signet"]
 });
 
 export enum EntryType {
   Note = "NOTE",
   Highlight = "HIGHLIGHT",
-  Bookmark = "BOOKMARK",
+  Bookmark = "BOOKMARK"
 }
 
 export class KindleEntryParsed {
   private kindleEntry: KindleEntry;
   authors: string;
   bookTile: string;
-  page: number;
+  page: number | string;
   location: string;
   dateOfCreation: string;
   type: EntryType;
@@ -165,13 +165,10 @@ export class KindleEntryParsed {
     const matchPage: RegExpExecArray | null | undefined = /\d+/.exec(
       pageMetadata
     );
-    if (!matchPage) {
-      throw new Error(
-        `Can't parse page number from pageMetadataStr: ${pageMetadata}`
-      );
-    }
-    const page = Number(matchPage[0]);
-    if (isNaN(page)) {
+    const page = matchPage
+      ? Number(matchPage[0])
+      : pageMetadata.split(" ").reverse()[0];
+    if (typeof page === "number" && isNaN(page)) {
       throw new Error(
         `Can't parse page number of: matchPage: ${matchPage} from pageMetadataStr: ${pageMetadata}`
       );
@@ -180,10 +177,8 @@ export class KindleEntryParsed {
   }
 
   parseLocation(locationMetadata: string) {
-    const matchLocation:
-      | RegExpExecArray
-      | null
-      | undefined = LocationRegex.exec(locationMetadata);
+    const matchLocation: RegExpExecArray | null | undefined =
+      LocationRegex.exec(locationMetadata);
     if (!matchLocation) {
       throw new Error(
         `Can't parse location from locationMetadataStr: ${locationMetadata}`
@@ -248,7 +243,7 @@ export class KindleEntryParsed {
       location: this.location,
       dateOfCreation: this.dateOfCreation,
       content: this.content,
-      type: this.type,
+      type: this.type
     };
   }
 }
